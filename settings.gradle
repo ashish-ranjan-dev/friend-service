@@ -1,0 +1,2 @@
+rootProject.name = 'friendship-service'
+include 'friendship-service-api'

@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'maven-publish'
+}
+
+group = 'com.outing.friendship'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+jar {
+    enabled = true;
+}
+
+bootJar {
+    enabled = false;
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+dependencies {
+    implementation 'com.outing.commons:commons-api:0.0.1-SNAPSHOT'
+    implementation 'com.outing.auth:auth-service-api:1.0-SNAPSHOT'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.0.3'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.3"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
